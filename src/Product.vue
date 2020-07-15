@@ -43,7 +43,7 @@
         props: {
    
         },
-        components: {  productTabs},
+        components: { productTabs },
         data() {
             return {
                 brand: 'Vue Mastery',

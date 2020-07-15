@@ -21,12 +21,11 @@
 
   <div id="app">
     <div class="nav-bar">
-      <button class="cart">
-        <p>Cart: {{ cart.length }}</p>
-      </button>
+      <button class="cart">Cart: {{ cart.length }}</button>
     </div>
     <!-- Remove the methods from the root area and Vue instance, add those to eventBus-->
     <product  @add-to-cart="incrementCart" @remove-item="removeItem"></product>
+    <sidebar-cart />
   </div>
 </body>
 </html>

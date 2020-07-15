@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 Vue.config.productionTip = false
 Vue.component('product', require('../src/Product').default);
+Vue.component('sidebar-cart', require('../src/SidebarCart').default);
 
 new Vue({
     el: '#app',
