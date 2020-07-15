@@ -41,10 +41,7 @@
 
         name: 'Product',
         props: {
-            premium: {
-                type: Boolean,
-                required: true,
-            }
+   
         },
         components: {  productTabs},
         data() {
@@ -97,12 +94,15 @@
         },
         methods: {
             addToCart(id) {
+                
+                //add to the event bus instead so a cart component can be udpated
                 this.$emit('add-to-cart', id)
             },
             changeImg(index) {
                 this.selectedVariant = index;
             },
             removeItem(id) {
+                //add to the event bus instead so a cart component can be udpated
                 this.$emit('remove-item', id)
             },
 
