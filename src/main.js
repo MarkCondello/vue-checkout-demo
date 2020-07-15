@@ -1,8 +1,23 @@
 import Vue from 'vue'
-import App from './App.vue'
 
 Vue.config.productionTip = false
+Vue.component('product', require('../src/Product').default);
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+    el: '#app',
+    data: {
+        premium: true,
+        cart: [],
+    },
+    methods: {
+        incrementCart(id){
+            this.cart.push(id)
+        },
+        removeItem(id){
+            this.cart = this.cart.filter(item=> {
+                return item !== id;
+            })
+        }
+    }
+
+})
