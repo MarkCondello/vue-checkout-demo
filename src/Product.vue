@@ -7,6 +7,10 @@
             <h1>{{title}}</h1>
             <h2 v-show="onSale">{{showSaleMsg}}</h2>
             <p>Shipping: {{shipping}}</p>
+            <h3>Price: ${{variants[selectedVariant].price}}</h3>
+            <label> Qty:
+                <input type="number" min="1" v-model="qty"   />
+            </label>
             <p v-if="inStock > 10">In stock</p>
             <p v-else-if="inStock <= 10 && inStock > 0">Almost sold out</p>
             <p v-else :class="{'line-through': !inStock}">Out of stock</p>
@@ -22,10 +26,10 @@
             <ul>
                 <li v-for="size in sizes" v-text="size" :key="sizes.indexOf(size)"></li>
             </ul>
-            <button v-on:click="addToCart(variants[selectedVariant].variantId)" :disabled="!inStock"
+            <button v-on:click="addToCart(variants[selectedVariant])" :disabled="!inStock"
                     :class="{disabledButton: !inStock}">Add to Cart
             </button>
-            <button v-on:click="removeItem(variants[selectedVariant].variantId)">Remove Current Item</button>
+            <!-- <button v-on:click="removeItem(variants[selectedVariant].variantId)">Remove Current Item</button> -->
         </div>
         <productTabs :reviews="reviews" :details="details"></productTabs>
     </div>
@@ -51,16 +55,19 @@
                 selectedVariant: 0,
                 onSale: true,
                 details: ['80% cotton', '20% polyester', 'Gender-neutral', 'Stretchy and firm'],
+                qty: 1,
                 variants: [{
                     variantId: 125,
                     variantColor: 'green',
                     variantImage: greenSockImage,
                     variantStock: 20,
+                    price: 6.99
                 }, {
                     variantId: 127,
                     variantColor: 'blue',
                     variantImage: blueSockImage,
-                    variantStock: 2
+                    variantStock: 2,
+                    price: 8.99
                 }],
                 sizes: [
                     'small',
@@ -93,23 +100,16 @@
             }
         },
         methods: {
-            addToCart(id) {
-                
-                //add to the event bus instead so a cart component can be udpated
-                this.$emit('add-to-cart', id)
+            addToCart(product) {
+                eventBus.$emit('addToCart', product, this.qty, this.title);
             },
             changeImg(index) {
                 this.selectedVariant = index;
             },
-            removeItem(id) {
-                //add to the event bus instead so a cart component can be udpated
-                this.$emit('remove-item', id)
-            },
-
         },
         mounted() {
             eventBus.$on('review-submitted', productReview => {
-                  this.reviews.push(productReview);
+                this.reviews.push(productReview);
             })
 
         }
