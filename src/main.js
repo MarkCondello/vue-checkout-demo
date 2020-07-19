@@ -40,7 +40,6 @@ new Vue({
         });
 
         eventBus.$on('showSideCart', ()=>{
-            console.log('THIS', this);
             //get width of side cart,
             //get the root element
             //add -right value of root element with sidecart width
@@ -49,11 +48,20 @@ new Vue({
                  return  child.$el.classList.value  === 'sidebar-cart'
                 }
             ),
-            sideBarWidth = sideBarCart.$el.clientWidth;
+            sideBarWidth = sideBarCart.$el.clientWidth,
+            rightVal = 0;
 
-            console.log(container, sideBarWidth)
             if(this.cartQty > 0){
-                container.style.right = `${sideBarWidth}px`;
+                 let slideLeftInterval = setInterval(function(){
+                    rightVal +=1;
+                    container.style.right = `${rightVal}px`
+
+                   if(rightVal === sideBarWidth){
+                       clearInterval(slideLeftInterval)   
+                    } 
+                       // console.log("RightVal", rightVal);
+                    
+                }, 10); 
             }
         
         })
@@ -63,3 +71,4 @@ new Vue({
     }
 
 })
+
