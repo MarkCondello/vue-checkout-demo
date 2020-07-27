@@ -1,20 +1,20 @@
 <template>
-    <div class="sidebar-cart" ref="sidebarCart">
+    <div class="sidebar-cart" ref="sidebarCart" >
         <div class="details"> 
-            <h2>Cart</h2>
-            <div v-for="(product, index) in this.$root.cart"  :key="index" class="product-container">
+            <button class="close-sidecart" @click="closeSideCart">&times;</button>
+            <h2 class="cart-title">Cart</h2>
+            <div v-for="(product, index) in products"  :key="index" class="product-container">
                 <button class="remove-product-btn" @click.prevent="removeProduct(product)">&times;</button>
                 <div class="product">
                     <div class="product-image">
-                        <img :alt="product.title"  :src="product.variantImage" />  
+                        <img :alt="product.title" :src="product.variantImage" />  
                     </div>
                     <div class="product-info">
                         <p class="title">{{product.title}} | {{product.variantColor}}</p>
                         <hr>
                         <div class="cost-qty">
                             <span>${{ product.price }}</span>
-                            <!-- Inc product qty input to change cart qty -->
-                            <span>Qty: {{product.qty}} </span>
+                            <span>Qty:  <input type="number" placeholder="product.qty" v-model="product.qty" @change="updateItemQty(product)"/> </span>
                         </div>
                     </div> 
                 </div> 
@@ -38,33 +38,68 @@ export default {
     computed: {
          getTotals: function(){
            return this.$root.cart.reduce((acc, item) => {
-                return acc += item.price * item.qty; 
+                return acc += item.price * parseInt(item.qty); 
             }, 0);
         },
     },
     created(){
-  
+        this.products = this.$root.cart;
     },
     methods: {
+        updateItemQty(product){
+            console.log("product", product)
+            eventBus.$emit('updateItemQty', product);
+        },
         removeProduct(product) {
             //add to the event bus instead so a cart component can be udpated
             eventBus.$emit('removeProduct', product);
+
+            this.products = this.products.filter(item => {
+                return item.variantId !== product.variantId;
+            })
         },
+
+        closeSideCart(){
+            eventBus.$emit('closeSideCart')
+        }
     }
 }
 </script>
 <style scoped>
     .sidebar-cart {
         width: 400px;
-        height: 100vh;
+        min-height: 100vh;
+        height: 100%;
         position: absolute;
         top: 0;
         background: #d8d8d8;
-        right: calc((2rem + 400px) * -1);
+        right: calc((3rem + 400px) * -1);  
+     
         padding: 1rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        overflow-y: hidden;
+    }
+    .sidebar-cart .details {
+        position: relative;
+    }
+
+    .sidebar-cart .details .cart-title{
+        margin-top:0;
+    }
+
+    .sidebar-cart .details .close-sidecart {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: black;
+        background: transparent;
+        border: none;
+        height: 10px;
+        width: 10px;
+        right: 1rem;
+        font-size: 33px;
     }
 
     .sidebar-cart .product-container {

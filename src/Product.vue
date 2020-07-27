@@ -1,5 +1,5 @@
 <template>
-    <div class="product">
+    <div class="product"  >
         <div class="product-image">
             <img :alt="product" :src="variants[selectedVariant].variantImage"/>
          </div>
@@ -29,7 +29,13 @@
             <button v-on:click="addToCart(variants[selectedVariant])" :disabled="!inStock"
                     :class="{disabledButton: !inStock}">Add to Cart
             </button>
-            <!-- <button v-on:click="removeItem(variants[selectedVariant].variantId)">Remove Current Item</button> -->
+
+            <button @click='visible = !visible'>Toggle Div</button>
+            <transition name="fade">
+                <div v-show="visible">
+                    Hello World
+                </div>
+            </transition>
         </div>
         <productTabs :reviews="reviews" :details="details"></productTabs>
     </div>
@@ -50,6 +56,7 @@
         components: { productTabs },
         data() {
             return {
+                visible: true,
                 brand: 'Vue Mastery',
                 product: 'Socks',
                 selectedVariant: 0,
@@ -116,3 +123,11 @@
     }
 </script>
 
+<style  >
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

@@ -20,12 +20,15 @@
   </noscript>
 
   <div id="app">
-    <div class="nav-bar">
-       <cart-btn>
-    </div>
-    <!-- Remove the methods from the root area and Vue instance, add those to eventBus-->
-    <product></product>
-    <sidebar-cart />
+      <!-- ADD CONTAINER HERE TO ANIMATE PAGE ???? -->
+    <container> 
+      <div class="nav-bar" key="navbar">
+        <cart-btn>
+      </div>
+      <!-- Remove the methods from the root area and Vue instance, add those to eventBus-->
+      <product key="product"></product>
+      <sidebar-cart key="sidebarCart" />
+    </container>
   </div>
 </body>
 </html>

@@ -8,10 +8,13 @@ export default {
 
     methods: {
         showSideCart( ){
-            
-                eventBus.$emit('showSideCart')
-            
+            eventBus.$emit('showSideCart')
         }
     },
 }
 </script>
+<style>
+    .cart {
+        margin: 1rem;
+    }
+</style>
