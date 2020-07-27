@@ -3,7 +3,7 @@
         <div class="details"> 
             <button class="close-sidecart" @click="closeSideCart">&times;</button>
             <h2 class="cart-title">Cart</h2>
-            <div v-for="(product, index) in products"  :key="index" class="product-container">
+            <div v-for="(product, index) in this.$root.cart"  :key="index" class="product-container">
                 <button class="remove-product-btn" @click.prevent="removeProduct(product)">&times;</button>
                 <div class="product">
                     <div class="product-image">
@@ -30,11 +30,7 @@
  import eventBus from "./eventBus";
 export default {
     name: 'SidebarCart',
-    data() {
-        return {
-            products: []
-         }
-    },
+ 
     computed: {
          getTotals: function(){
            return this.$root.cart.reduce((acc, item) => {
@@ -43,22 +39,14 @@ export default {
         },
     },
     created(){
-        this.products = this.$root.cart;
-    },
+     },
     methods: {
         updateItemQty(product){
-            console.log("product", product)
             eventBus.$emit('updateItemQty', product);
         },
         removeProduct(product) {
-            //add to the event bus instead so a cart component can be udpated
-            eventBus.$emit('removeProduct', product);
-
-            this.products = this.products.filter(item => {
-                return item.variantId !== product.variantId;
-            })
+             eventBus.$emit('removeProduct', product);
         },
-
         closeSideCart(){
             eventBus.$emit('closeSideCart')
         }
